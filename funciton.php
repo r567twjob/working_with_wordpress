@@ -407,3 +407,38 @@ add_filter('admin_footer_text', 'dashboard_footer_developer');
 // include dirname(__FILE__). '/wc-settings.php';
 // //引用 Knockers 網站狀態追蹤程式碼片段
 // include dirname(__FILE__) . '/ks_server_checker.php';
+
+// Disable REST API
+// https://rudrastyh.com/wordpress/disable-rest-api.html
+add_filter( 'rest_endpoints', 'jim_remove_rest_api_endpoint' );
+function jim_remove_rest_api_endpoint( $rest_endpoints ){
+    if( isset( $rest_endpoints[ '/wp/v2/users' ] ) ) {
+        unset( $rest_endpoints[ '/wp/v2/users' ] );
+    }
+    if( isset( $rest_endpoints[ '/wp/v2/users/(?P<id>[\d]+)' ] ) ) {
+        unset( $rest_endpoints[ '/wp/v2/users/(?P<id>[\d]+)' ] );
+    }
+    return $rest_endpoints;
+}
+
+add_filter( 'rest_authentication_errors', 'rudr_turn_off_rest_api_not_logged_in' );
+
+function rudr_turn_off_rest_api_not_logged_in( $errors ) {
+	// if there is already an error, just return it
+	if( is_wp_error( $errors ) ) {
+		return $errors;
+	}
+
+    $whitelist = array( 
+		'37.33.184.198',
+		'62.74.24.234',
+		// etc
+	);
+	
+	if( ! is_user_logged_in() && ! in_array( $_SERVER[ 'REMOTE_ADDR' ], $whitelist ) ) {
+		// return WP_Error object if user is not logged in
+		return new WP_Error( 'no_rest_api_sorry', 'REST API not allowed', array( 'status' => 401 ) );
+	}
+	
+	return $errors;
+}
