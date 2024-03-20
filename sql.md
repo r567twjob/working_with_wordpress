@@ -28,3 +28,19 @@ WHERE  p.`post_type` = 'shop_coupon'
        AND p.`post_status` = 'publish' 
 GROUP  BY p.`ID` ;
 ```
+
+## 清除所有 Woocommerce 訂單
+```
+TRUNCATE `wp_wc_admin_notes`;
+TRUNCATE `wp_wc_admin_note_actions`;
+TRUNCATE `wp_wc_orders`;
+TRUNCATE `wp_wc_orders_meta`;
+TRUNCATE `wp_wc_order_addresses`;
+TRUNCATE `wp_wc_order_coupon_lookup`;
+TRUNCATE `wp_wc_order_operational_data`;
+TRUNCATE `wp_wc_order_product_lookup`;
+TRUNCATE `wp_wc_order_stats`;
+TRUNCATE `wp_wc_reserved_stock`;
+TRUNCATE `wp_woocommerce_order_itemmeta`;
+TRUNCATE `wp_woocommerce_order_items`;
+```
