@@ -44,3 +44,13 @@ TRUNCATE `wp_wc_reserved_stock`;
 TRUNCATE `wp_woocommerce_order_itemmeta`;
 TRUNCATE `wp_woocommerce_order_items`;
 ```
+
+## 新增 admin user 讓他可以看到頁面
+- https://thrivewp.com/add-admin-user-to-wordpress-database/
+```
+INSERT INTO `wp_users` (`ID`, `user_login`, `user_pass`, `user_nicename`, `user_email`, `user_url`, `user_registered`, `user_activation_key`, `user_status`, `display_name`) VALUES (NULL, 'wordpress', md5('wordpress'), 'wordpress', 'r567twjob@gmail.com', 'http://127.0.0.1', '2023-09-12 02:23:44', '', '0', 'wordpress');
+
+INSERT INTO `wp_usermeta` (`umeta_id`, `user_id`, `meta_key`, `meta_value`) VALUES (NULL, '1', 'wp_capabilities', 'a:1:{s:13:\"administrator\";s:1:\"1\";}');
+
+INSERT INTO `wp_usermeta` (`umeta_id`, `user_id`, `meta_key`, `meta_value`) VALUES (NULL, '1', 'wp_user_level', '10');
+```
